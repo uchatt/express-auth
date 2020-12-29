@@ -31,11 +31,11 @@ USE `club`;
 
 DROP TABLE IF EXISTS `t_club`;
 CREATE TABLE `t_club` (
-  `id` int(11) NOT NULL,
+  `id` SERIAL,
   `name` varchar(256) NOT NULL,
   `addr` varchar(512) NOT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp(),
-  `updated_at` date DEFAULT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT current_timestamp(),
+  `updated_at` DATETIME DEFAULT NULL,
   `is_active` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -43,8 +43,8 @@ CREATE TABLE `t_club` (
 -- Dumping data for table `t_club`
 --
 
-INSERT INTO `t_club` (`id`, `name`, `addr`, `created_at`, `updated_at`, `is_active`) VALUES
-(1, 'Chetla Agrani Club', 'ZYX, Chetla, Kolkata - 700027', '2020-12-26', NULL, 1);
+INSERT INTO `t_club` (`name`, `addr`) VALUES
+('Chetla Agrani Club', 'ZYX, Chetla, Kolkata - 700027');
 
 -- --------------------------------------------------------
 
@@ -54,11 +54,11 @@ INSERT INTO `t_club` (`id`, `name`, `addr`, `created_at`, `updated_at`, `is_acti
 
 DROP TABLE IF EXISTS `t_club_sections`;
 CREATE TABLE `t_club_sections` (
-  `id` int(11) NOT NULL,
+  `id` SERIAL,
   `name` varchar(256) NOT NULL,
   `section_type_id` int(11) NOT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp(),
-  `updated_at` date DEFAULT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT current_timestamp(),
+  `updated_at` DATETIME DEFAULT NULL,
   `is_active` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -83,10 +83,10 @@ INSERT INTO `t_club_sections` (`id`, `name`, `section_type_id`, `created_at`, `u
 
 DROP TABLE IF EXISTS `t_club_section_type`;
 CREATE TABLE `t_club_section_type` (
-  `id` int(11) NOT NULL,
+  `id` SERIAL,
   `name` varchar(256) NOT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp(),
-  `updated_at` date DEFAULT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT current_timestamp(),
+  `updated_at` DATETIME DEFAULT NULL,
   `is_active` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -107,16 +107,16 @@ INSERT INTO `t_club_section_type` (`id`, `name`, `created_at`, `updated_at`, `is
 
 DROP TABLE IF EXISTS `t_user_profile`;
 CREATE TABLE `t_user_profile` (
-  `id` int(11) NOT NULL,
+  `id` SERIAL,
   `first` varchar(128) NOT NULL,
   `last` varchar(128) NOT NULL,
   `email` varchar(128) NOT NULL,
   `phone` varchar(10) NOT NULL,
-  `dob` date NOT NULL,
+  `dob` DATE NOT NULL,
   `password_hash` varchar(64) NOT NULL,
   `salt` varchar(30) NOT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp(),
-  `updated_at` date DEFAULT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT current_timestamp(),
+  `updated_at` DATETIME DEFAULT NULL,
   `is_active` tinyint(4) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

@@ -24,6 +24,7 @@ router.post(
             .escape(),
         body("email").not().isEmpty().trim().isEmail().normalizeEmail(),
         body("phone").not().isEmpty().isMobilePhone("en-IN"),
+        body("dob").not().isEmpty().isDate().withMessage("Invalid date, correct it asshole."),
         body("password")
             .not()
             .isEmpty()

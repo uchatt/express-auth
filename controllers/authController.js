@@ -28,22 +28,23 @@ module.exports.signup_post = async (req, res) => {
 
     // Extract data from Request body
     console.log(req.body);
-    const { first, last, email, phone } = req.body;
+    const { first, last, email, phone, dob } = req.body;
     // let password = req.body["password"];
     let salt = await bcrypt.genSalt();
     let password_hash = await bcrypt.hash(req.body["password"], salt);
 
     // DB Query
-    let DEBUG = true;
+    let DEBUG = false;
     if (DEBUG) {
+        console.log(req.body);
         res.status(200).json("IN DEBUG MODE.");
     } else {
         let conn;
         try {
             conn = await pool.getConnection();
             const db_res = await conn.query(
-                "INSERT INTO t_user_profile (first, last, email, phone, password_hash, salt ) values (?, ?, ?, ?, ?, ?)",
-                [first, last, email, phone, password_hash, salt]
+                "INSERT INTO t_user_profile (first, last, email, phone, dob, password_hash, salt ) values (?, ?, ?, ?, ?, ?, ?)",
+                [first, last, email, phone, dob, password_hash, salt]
             );
             console.log(db_res);
             res.status(201).json({
@@ -58,8 +59,6 @@ module.exports.signup_post = async (req, res) => {
             console.log(err.message);
         } finally {
             if (conn) return conn.end();
-            password = "";
-            salt = "";
         }
     }
 };
