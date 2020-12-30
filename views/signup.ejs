@@ -1,5 +1,67 @@
 <%- include('partials/header'); -%>
 
-<h1>Sign Up Page</h1>
+<form action="/signup">
+    <h2>Sign up</h2>
+    <label for="first">First Name</label>
+    <input type="text" name="first" required value="Utsav" />
+    <div class="first error"></div>
+    <label for="last">Last Name</label>
+    <input type="text" name="last" required value="Chatterjee" />
+    <div class="last error"></div>
+    <label for="email">Email</label>
+    <input type="text" name="email" required value="abc@gmail.com" />
+    <div class="email error"></div>
+    <label for="phone">Phone</label>
+    <input type="text" name="phone" required value="8990897867" />
+    <div class="phone error"></div>
+    <label for="dob">DOB</label>
+    <input type="date" name="dob" required />
+    <div class="dob error"></div>
+    <label for="password">Password</label>
+    <input type="password" name="password" required value="abc" />
+    <div class="password error"></div>
+    <button>Sign up</button>
+</form>
 
 <%- include('partials/footer'); -%>
+
+<script>
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // get values
+        const first = form.first.value;
+        const last = form.last.value;
+        const email = form.email.value;
+        const dob = form.dob.value;
+        const phone = form.phone.value;
+        const password = form.password.value;
+
+        try {
+            const res = await fetch("/signup", {
+                method: "POST",
+                body: JSON.stringify({
+                    first,
+                    last,
+                    email,
+                    phone,
+                    dob,
+                    password
+                }),
+                headers: { "Content-Type": "application/json" }
+            });
+            const response = await res.json();
+            console.log(response);
+            if (!response.success) {
+                alert(response.message);
+                document.location.reload(false);
+            } else {
+                document.location.reload();
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    });
+</script>

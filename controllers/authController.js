@@ -27,7 +27,6 @@ module.exports.signup_post = async (req, res) => {
     }
 
     // Extract data from Request body
-    console.log(req.body);
     const { first, last, email, phone, dob } = req.body;
     // let password = req.body["password"];
     let salt = await bcrypt.genSalt();
@@ -43,20 +42,31 @@ module.exports.signup_post = async (req, res) => {
         try {
             conn = await pool.getConnection();
             const db_res = await conn.query(
-                "INSERT INTO t_user_profile (first, last, email, phone, dob, password_hash, salt ) values (?, ?, ?, ?, ?, ?, ?)",
-                [first, last, email, phone, dob, password_hash, salt]
+                "select id from t_user_profile where email=? and phone=?",
+                [email, phone]
             );
-            console.log(db_res);
-            res.status(201).json({
-                success: "true",
-                message: `Thanks for signing up.`
-            });
+
+            if (db_res.length === 0) {
+                const db_res = await conn.query(
+                    "INSERT INTO t_user_profile (first, last, email, phone, dob, password_hash, salt ) values (?, ?, ?, ?, ?, ?, ?)",
+                    [first, last, email, phone, dob, password_hash, salt]
+                );
+                res.status(201).json({
+                    success: true,
+                    message: `Thanks for signing up.`
+                });
+            } else if (db_res.length === 1) {
+                res.json({
+                    success: false,
+                    message: `A user with the same credential exists.`
+                });
+            }
         } catch (err) {
+            console.log(err.message);
             res.status(400).json({
-                success: "false",
+                success: false,
                 message: `Failed due to some technical issues. Kindly contact admin.`
             });
-            console.log(err.message);
         } finally {
             if (conn) return conn.end();
         }
